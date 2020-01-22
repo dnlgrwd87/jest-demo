@@ -30,10 +30,18 @@ export default class CustomArray {
     }
 
     reduce(callback, initialValue) {
-        let accumulator = initialValue || 0;
+        if (this.elements.length === 0 && !initialValue) {
+            throw new TypeError('Reduce of empty array with no initial value');
+        }
+
+        let accumulator = initialValue;
 
         for (let i = 0; i < this.elements.length; i++) {
-            accumulator = callback(accumulator, this.elements[i], i);
+            if (!accumulator) {
+                accumulator = this.elements[0];
+            } else {
+                accumulator = callback(accumulator, this.elements[i], i);
+            }
         }
         return accumulator;
     }

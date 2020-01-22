@@ -50,18 +50,41 @@ describe('CustomArray', () => {
     });
 
     describe('#reduce', () => {
-        it('should return the sum of all numbers in the array', () => {
+        it('should return the first element in the array if only one exists and no initial value', () => {
+            const newArr = new CustomArray(5);
+            const callback = jest.fn((acc, val) => acc + val);
+            const result = newArr.reduce(callback);
+            expect(callback).not.toHaveBeenCalled();
+            expect(result).toBe(5);
+        })
+
+        it('should return the sum of all numbers in the array when no initial value is provided', () => {
             const callback = jest.fn((acc, val) => acc + val);
             const result = customArray.reduce(callback);
-            expect(callback).toHaveBeenCalledTimes(5);
+            expect(callback).toHaveBeenCalledTimes(4);
             expect(result).toBe(15);
         });
 
-        it('should return the product of all numbers in the array when inital value is 1', () => {
-            const callback = jest.fn((acc, val) => acc * val);
-            const result = customArray.reduce(callback, 1);
+        it('should return the sum of all numbers in the array when 10 is the initial value', () => {
+            const callback = jest.fn((acc, val) => acc + val);
+            const result = customArray.reduce(callback, 10);
             expect(callback).toHaveBeenCalledTimes(5);
+            expect(result).toBe(25);
+        });
+
+        it('should return the product of all numbers when no initial value is provided', () => {
+            const callback = jest.fn((acc, val) => acc * val);
+            const result = customArray.reduce(callback);
+            expect(callback).toHaveBeenCalledTimes(4);
             expect(result).toBe(120);
+        });
+
+        it('should throw an error when the array is empty and no initial value is provided', () => {
+            const emptyArr = new CustomArray();
+            const callback = jest.fn((acc, val) => acc * val);
+            const reduceFunc = () => emptyArr.reduce(callback);
+            expect(reduceFunc).toThrowError('Reduce of empty array with no initial value');
+            expect(callback).not.toHaveBeenCalled();
         });
     });
 });
