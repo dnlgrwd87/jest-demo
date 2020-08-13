@@ -1,6 +1,6 @@
 export default class CustomArray {
     constructor(...args) {
-        this.elements = [...args];
+        this.elements = args;
     }
 
     forEach(callback) {
